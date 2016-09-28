@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>polygon_center_point | 随笔</title>
+  <title>获得多边形的重心点 | 随笔</title>
   <meta name="author" content="guoying">
   
   <meta name="description" content="看不到我">
@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="polygon_center_point"/>
+  <meta property="og:title" content="获得多边形的重心点"/>
   <meta property="og:site_name" content="随笔"/>
 
   
@@ -68,14 +68,13 @@
       
       
   
-    <h1 class="title">polygon_center_point</h1>
+    <h1 class="title">获得多边形的重心点</h1>
   
 
     </header>
     <div class="entry">
       
-        <p>###获得多边形的重心点</p>
-<p>思路<br><a id="more"></a></p>
+        <h3 id="获得多边形的重心点"><a href="#获得多边形的重心点" class="headerlink" title="获得多边形的重心点"></a>获得多边形的重心点</h3><p>思路<br><a id="more"></a></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">①质量集中在顶点上</div><div class="line">	n个顶点坐标为(xi,yi)。质量为mi，则重心</div><div class="line">	X = ∑( xi×mi ) / ∑mi</div><div class="line">	Y = ∑( yi×mi ) / ∑mi</div><div class="line">	特殊地。若每一个点的质量同样。则</div><div class="line">	X = ∑xi / n</div><div class="line">	Y = ∑yi / n</div><div class="line">②质量分布均匀</div><div class="line"> 　特殊地。质量均匀的三角形重心：</div><div class="line"> 　X = ( x0 + x1 + x2 ) / 3</div><div class="line"> 　Y = ( y0 + y1 + y2 ) / 3</div><div class="line">③三角形面积公式：S =  ( (x2 - x1) * (y3 - y1) - (x3 - x1) * (y2 - y1) ) / 2 ;</div><div class="line"> 做题步骤：1、将多边形切割成n-2个三角形。依据③公式求每一个三角形面积。</div><div class="line">             2、依据②求每一个三角形重心。</div><div class="line">             3、依据①求得多边形重心。</div></pre></td></tr></table></figure>
 <p>代码实现</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">    * 计算多边形重心点</div><div class="line">    * <span class="doctag">@param</span> polygon</div><div class="line">    * <span class="doctag">@return</span></div><div class="line">    */</div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Point <span class="title">getCenterPointWithPolygon</span><span class="params">(Point[] polygon)</span></span>&#123;</div><div class="line">       <span class="keyword">if</span> (polygon.length&lt;<span class="number">3</span>)</div><div class="line">           <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">       Point p1,p2,p3;</div><div class="line">       <span class="keyword">double</span> gx,gy,sumarea;</div><div class="line">       gx=gy=sumarea=<span class="number">0</span>;</div><div class="line">       p1=polygon[<span class="number">0</span>];</div><div class="line">       p2=polygon[<span class="number">1</span>];</div><div class="line">       <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">2</span>;i&lt;polygon.length;i++) &#123;</div><div class="line">           p3=polygon[i];</div><div class="line">           <span class="keyword">double</span> area=getArea(p1,p2,p3);</div><div class="line">           gx+=(p1.lng+p2.lng+p3.lng)*area;</div><div class="line">           gy+=(p1.lat+p2.lat+p3.lat)*area;</div><div class="line">           sumarea+=area;</div><div class="line">           p2=p3;</div><div class="line">       &#125;</div><div class="line">       gx=gx/sumarea/<span class="number">3</span>;</div><div class="line">       gy=gy/sumarea/<span class="number">3</span>;</div><div class="line">       <span class="keyword">return</span> <span class="keyword">new</span> Point(gy,gx);</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   <span class="comment">/**</span></div><div class="line">    * 三角形面积</div><div class="line">    */</div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">getArea</span><span class="params">(Point p1, Point p2, Point p3)</span> </span>&#123;</div><div class="line">       <span class="keyword">return</span> ((p2.lng-p1.lng)*(p3.lat-p1.lat)-(p3.lng-p1.lng)*(p2.lat-p1.lat))/<span class="number">2</span>;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
@@ -87,7 +86,7 @@
         
         
           <div class="alignright post-nav">
-            <em>下一篇: </em><a href="/2016/09/28/Untitled/"></a>
+            <em>下一篇: </em><a href="/2016/09/27/baidugeo/">百度地图相关计算代码</a>
           </div>
           <div class="clearfix"></div>
         
@@ -163,11 +162,7 @@
   <ul class="entry">
     
       <li>
-        <a href="/2016/09/28/polygon-center-point/">polygon_center_point</a>
-      </li>
-    
-      <li>
-        <a href="/2016/09/28/Untitled/"></a>
+        <a href="/2016/09/28/polygon-center-point/">获得多边形的重心点</a>
       </li>
     
       <li>
