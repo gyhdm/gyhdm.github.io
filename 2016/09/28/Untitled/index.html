@@ -1,0 +1,206 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>随笔</title>
+  <meta name="author" content="guoying">
+  
+  <meta name="description" content="看不到我">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="随笔"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="随笔" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="/js/jquery.min.js"></script>
+
+  
+<script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-45019001-1', 'topdna.org');
+  ga('send', 'pageview');
+</script>
+
+
+</head>
+
+
+<body>
+  <!--[if lte IE 8]> <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'> <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode"><img src="http://storage.ie6countdown.com/assets/100/images/banners/warning_bar_0027_Simplified Chinese.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today." style='margin-left:auto;margin-right:auto;display: block;'/></a></div> <![endif]-->
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">随笔</a></h1>
+  <h2><a href="/">大家都看不到我</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">首页</a></li>
+    
+      <li><a href="/archives">归档</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <time datetime="2016-09-28T07:14:15.000Z"><a href="/2016/09/28/Untitled/">2016-09-28</a></time>
+      
+      
+  
+    <h1 class="title"></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>###获得多边形的重心点</p>
+<p>思路</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">①质量集中在顶点上</div><div class="line">	n个顶点坐标为(xi,yi)。质量为mi，则重心</div><div class="line">	X = ∑( xi×mi ) / ∑mi</div><div class="line">	Y = ∑( yi×mi ) / ∑mi</div><div class="line">	特殊地。若每一个点的质量同样。则</div><div class="line">	X = ∑xi / n</div><div class="line">	Y = ∑yi / n</div><div class="line">②质量分布均匀</div><div class="line"> 　特殊地。质量均匀的三角形重心：</div><div class="line"> 　X = ( x0 + x1 + x2 ) / 3</div><div class="line"> 　Y = ( y0 + y1 + y2 ) / 3</div><div class="line">③三角形面积公式：S =  ( (x2 - x1) * (y3 - y1) - (x3 - x1) * (y2 - y1) ) / 2 ;</div><div class="line"> 做题步骤：1、将多边形切割成n-2个三角形。依据③公式求每一个三角形面积。</div><div class="line">             2、依据②求每一个三角形重心。</div><div class="line">             3、依据①求得多边形重心。</div></pre></td></tr></table></figure>
+<p>代码实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">    * 计算多边形重心点</div><div class="line">    * <span class="doctag">@param</span> polygon</div><div class="line">    * <span class="doctag">@return</span></div><div class="line">    */</div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Point <span class="title">getCenterPointWithPolygon</span><span class="params">(Point[] polygon)</span></span>&#123;</div><div class="line">       <span class="keyword">if</span> (polygon.length&lt;<span class="number">3</span>)</div><div class="line">           <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">       Point p1,p2,p3;</div><div class="line">       <span class="keyword">double</span> gx,gy,sumarea;</div><div class="line">       gx=gy=sumarea=<span class="number">0</span>;</div><div class="line">       p1=polygon[<span class="number">0</span>];</div><div class="line">       p2=polygon[<span class="number">1</span>];</div><div class="line">       <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">2</span>;i&lt;polygon.length;i++) &#123;</div><div class="line">           p3=polygon[i];</div><div class="line">           <span class="keyword">double</span> area=getArea(p1,p2,p3);</div><div class="line">           gx+=(p1.lng+p2.lng+p3.lng)*area;</div><div class="line">           gy+=(p1.lat+p2.lat+p3.lat)*area;</div><div class="line">           sumarea+=area;</div><div class="line">           p2=p3;</div><div class="line">       &#125;</div><div class="line">       gx=gx/sumarea/<span class="number">3</span>;</div><div class="line">       gy=gy/sumarea/<span class="number">3</span>;</div><div class="line">       <span class="keyword">return</span> <span class="keyword">new</span> Point(gy,gx);</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   <span class="comment">/**</span></div><div class="line">    * 三角形面积</div><div class="line">    */</div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">getArea</span><span class="params">(Point p1, Point p2, Point p3)</span> </span>&#123;</div><div class="line">       <span class="keyword">return</span> ((p2.lng-p1.lng)*(p3.lat-p1.lat)-(p3.lng-p1.lng)*(p2.lat-p1.lat))/<span class="number">2</span>;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+
+        
+          <div class="alignleft post-nav">
+            <em>上一篇: </em><a href="/2016/09/28/polygon-center-point/">polygon_center_point</a>
+          </div>
+        
+        
+          <div class="alignright post-nav">
+            <em>下一篇: </em><a href="/2016/09/27/baidugeo/">百度地图相关计算代码</a>
+          </div>
+          <div class="clearfix"></div>
+        
+
+        
+        
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+
+  
+</section>
+
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com.hk/search" method="get" accept-charset="utf-8">
+    <input type="text" name="q" results="0" placeholder="搜一下">
+    <i class="icon-search"></i>
+    <input type="hidden" name="q" value="site:gyhdm.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/技术/">技术</a><small>3</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/Geo/">Geo</a><small>3</small></li>
+  
+    <li><a href="/tags/多边形算法/">多边形算法</a><small>3</small></li>
+  
+    <li><a href="/tags/百度地图/">百度地图</a><small>3</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">最新文章</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2016/09/28/polygon-center-point/">polygon_center_point</a>
+      </li>
+    
+      <li>
+        <a href="/2016/09/28/Untitled/"></a>
+      </li>
+    
+      <li>
+        <a href="/2016/09/27/baidugeo/">百度地图相关计算代码</a>
+      </li>
+    
+      <li>
+        <a href="/2016/09/27/hello-world/">百度地图相关计算代码</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/Geo/" style="font-size: 10px;">Geo</a> <a href="/tags/多边形算法/" style="font-size: 10px;">多边形算法</a> <a href="/tags/百度地图/" style="font-size: 10px;">百度地图</a>
+  </div>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <div id="go-pg-top"><i class="icon-arrow-up"></i></div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2016 guoying
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+</body>
+
+</html>
